@@ -1,0 +1,16 @@
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\bin\Debug\DoorsMaketChangers.dll
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\bin\Debug\DoorsMaketChangers.pdb
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\bin\Debug\KAPITypes.dll
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\bin\Debug\COM_DoorsLibrary.pdb
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\Interop.SldWorks.dll
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\Interop.SwCommands.dll
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\Interop.SwConst.dll
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMaketChangers.csproj.ResolveComReference.cache
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMaketChangers.csproj.CoreCompileInputs.cache
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMaketChangers.csproj.CopyComplete
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMaketChangers.dll
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMaketChangers.pdb
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\bin\Debug\COM_DoorsLibrary.dll
+E:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMaketChangers.csproj.AssemblyReference.cache
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\Программа обработки\DoorsMaketChangers.dll
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\Программа обработки\DoorsMaketChangers.pdb

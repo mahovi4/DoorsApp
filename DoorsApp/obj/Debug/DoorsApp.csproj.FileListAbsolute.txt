@@ -1,0 +1,34 @@
+E:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\DoorsApp.exe.config
+E:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\DoorsApp.exe
+E:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\DoorsApp.pdb
+E:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\COM_DoorsLibrary.pdb
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\SDK_ClassLibrary\DoorsApp.exe.config
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\SDK_ClassLibrary\DoorsApp.exe
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\SDK_ClassLibrary\DoorsApp.pdb
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\Программа обработки\DoorsApp.exe.config
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\Программа обработки\DoorsApp.exe.manifest
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\Программа обработки\DoorsApp.application
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\Программа обработки\DoorsApp.exe
+\\nas\ГК СТАЛЛ-ДООРС\отдел конструкторский\Автоматическая_обработка_заказов\Программа обработки\DoorsApp.pdb
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.csproj.AssemblyReference.cache
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.csproj.ResolveComReference.cache
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\EXSkan_Kalitka.resources
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\EXSkan_Reshetka.resources
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.FilterList.resources
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\InWork.resources
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\Main.resources
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.Properties.Resources.resources
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\WorkFiles.resources
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.csproj.GenerateResource.cache
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.csproj.CoreCompileInputs.cache
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.exe.manifest
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.application
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.csproj.CopyComplete
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.exe
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.pdb
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.Settings.resources
+E:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.csproj.SuggestedBindingRedirects.cache
+E:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\DoorsApp.exe.manifest
+E:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\DoorsApp.application
+E:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\DoorsMaketChangers.dll
+E:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\DoorsMaketChangers.pdb
