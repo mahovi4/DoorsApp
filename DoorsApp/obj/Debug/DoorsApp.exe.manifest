@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="COM_DoorsLibrary.dll" size="349696">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="COM_DoorsLibrary.dll" size="352256">
       <assemblyIdentity name="COM_DoorsLibrary" version="1.0.0.0" publicKeyToken="5534018916C5FC28" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>ZfjFFdeBuN9yD2AcCbMQtpqOjPxwD13pgbGbXdqr/1w=</dsig:DigestValue>
+        <dsig:DigestValue>BNflkts8mjh2zMykIQzjdAJ+zzmz6hOVgnPoUm+UnM8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -61,19 +61,19 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>AcM0Dr4A7MLtDN6qCOKawUM5VIVDclgN0CAs92q4lFU=</dsig:DigestValue>
+        <dsig:DigestValue>puR92VGOTVW67CBMS1+6+Msjr1i2RlU8sD/LiPzoYIs=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DoorsMaketChangers.dll" size="91136">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DoorsMaketChangers.dll" size="92160">
       <assemblyIdentity name="DoorsMaketChangers" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>prjrSSAq+Xpzv76V9vuj6cVaCfgJd1Sqqy7qWKwpk0w=</dsig:DigestValue>
+        <dsig:DigestValue>9wtkDG36xEHTHVxkbBbGwAsY5YffWRf6nPGwhPeDN/0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

@@ -803,13 +803,14 @@ public class ExcelSkaner
                 op.PoVertikali = short.TryParse(spv, out var pv) 
                     ? pv 
                     : (short) 0;
-                if (sgr.IndexOf("От замкового края", StringComparison.Ordinal) >= 0)
+                if (sgr.IndexOf("От замкового края", StringComparison.OrdinalIgnoreCase) >= 0)
                     op.GorRaspol = GorRaspolozhenie.от_замкового;
-                else if (sgr.IndexOf("От петлевого края", StringComparison.Ordinal) >= 0)
+                else if (sgr.IndexOf("От петлевого края", StringComparison.OrdinalIgnoreCase) >= 0)
                     op.GorRaspol = GorRaspolozhenie.от_петлевого;
                 else
                     op.GorRaspol = GorRaspolozhenie.по_центру;
-                op.VertRaspol = svr.IndexOf("От верха", StringComparison.Ordinal) >= 0 
+                op.VertRaspol = (svr.IndexOf("от верха", StringComparison.Ordinal) >= 0 || 
+                                 svr.IndexOf("От верха", StringComparison.Ordinal) >= 0)
                     ? VertRaspolozhenie.от_верха 
                     : VertRaspolozhenie.от_пола;
                 param.SetOkno((short)i, op);

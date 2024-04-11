@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using COM_DoorsLibrary;
@@ -2310,6 +2311,9 @@ namespace DoorsMaketChangers
                         case (int)ZamokNames.Почтовый:
                             ВысветитьЭлемент("ODL_Почтовый в активке");
                             break;
+                        case (int)ZamokNames.Гардиан_10_01:
+                            ВысветитьЭлемент("ODL_Гардиан 10.01 в активке");
+                            break;
                     }
                     switch (odl.Ruchka)
                     {
@@ -2344,6 +2348,9 @@ namespace DoorsMaketChangers
                         case (int)ZamokNames.Почтовый:
                             ВысветитьЭлемент("ODL_Почтовый в стойке С1");
                             break;
+                        case (int)ZamokNames.Гардиан_10_01:
+                            ВысветитьЭлемент("ODL_Гардиан 10.01 в стойке С1");
+                            break;
                     }
                     break;
                 case 3:
@@ -2368,6 +2375,9 @@ namespace DoorsMaketChangers
                             break;
                         case (int)ZamokNames.Почтовый:
                             ВысветитьЭлемент("ODL_Почтовый в профиле активки");
+                            break;
+                        case (int)ZamokNames.Гардиан_10_01:
+                            ВысветитьЭлемент("ODL_Гардиан 10.01 в профиле активки");
                             break;
                     }
                     switch (odl.Ruchka)
@@ -2394,6 +2404,9 @@ namespace DoorsMaketChangers
                             break;
                         case (int)ZamokNames.Гардиан_12_11:
                             ВысветитьЭлемент("ODL_Гардиан 12.11+Вега в профиле пассивки");
+                            break;
+                        case (int)ZamokNames.Гардиан_10_01:
+                            ВысветитьЭлемент("ODL_Гардиан 10.01 в профиле пассивки");
                             break;
                     }
                     break;
@@ -2466,6 +2479,11 @@ namespace DoorsMaketChangers
                         case (int)ZamokNames.Почтовый:
                             РедактироватьЭскиз("ODL_П_АС");
                             ИзменитьРазмер("ODL_П_АС", "ОтКрая", (float)odl.Zamok_OtKraya);
+                            ЗакрытьЭскиз();
+                            break;
+                        case (int)ZamokNames.Гардиан_10_01:
+                            РедактироватьЭскиз("ODL_Гардиан 10.01_АС");
+                            ИзменитьРазмер("ODL_Гардиан 10.01_АС", "ОтКрая", (float)odl.Zamok_OtKraya);
                             ЗакрытьЭскиз();
                             break;
                     }
@@ -2705,7 +2723,7 @@ namespace DoorsMaketChangers
                     if (kvd.Data.Zadvizhka.Kod == (short) ZadvizhkaNames.Ночной_сторож)
                         ВысветитьЭлемент("Ночной сторож");
 
-                    if(kvd.Data.LicPanel)
+                    if(kvd.Data.LicPanel && kvd.GetNalichnik() > 20)
                         ВысветитьЭлемент("Прорези_под_наличник");
                     break;
                 }
@@ -2715,7 +2733,7 @@ namespace DoorsMaketChangers
                     if(kvd.Data.Kod == 1 && kvd.Data.Protivos == 2)
                         ВысветитьЭлемент("3-ий противосъем");
 
-                    if (kvd.Data.LicPanel)
+                    if (kvd.Data.LicPanel && kvd.GetNalichnik(false) > 20)
                         ВысветитьЭлемент("Прорези_под_наличник");
                     break;
                 case Command_KVD.Притолока:
@@ -2741,6 +2759,8 @@ namespace DoorsMaketChangers
                     РедактироватьЭскиз("ЛЛ");
                     ИзменитьРазмер("ЛЛ", "Высота", (float)kvd.LL_Height);
                     ИзменитьРазмер("ЛЛ", "Ширина", (float)kvd.LL_Width);
+                    if(kvd.Name.IndexOf("КВ01", StringComparison.Ordinal) >= 0)
+                        ИзменитьРазмер("ЛЛ", "ОтПола", (float)kvd.LL_OtPola);
                     ЗакрытьЭскиз();
                     break;
                 case Command_KVD.Внутренний_лист:
@@ -2776,19 +2796,13 @@ namespace DoorsMaketChangers
                 case Command_KVD.Замковая_стойка:
                     РедактироватьЭскиз("ЗПС");
                     ИзменитьРазмер("ЗПС", "Длина", (float)kvd.VS_Length);
-                    ИзменитьРазмер("ЗПС", "Наличник", 
-                        kvd.Data.Otkrivanie == Otkrivanie.Левое || kvd.Data.Otkrivanie == Otkrivanie.ЛевоеВО 
-                            ? (float)kvd.Nalichnik(Raspolozhenie.Прав) 
-                            : (float)kvd.Nalichnik(Raspolozhenie.Лев));
+                    ИзменитьРазмер("ЗПС", "Наличник", GetNalichnik(kvd, true));
                     ЗакрытьЭскиз();
                     break;
                 case Command_KVD.Петлевая_стойка:
                     РедактироватьЭскиз("ЗПС");
                     ИзменитьРазмер("ЗПС", "Длина", (float)kvd.VS_Length);
-                    ИзменитьРазмер("ЗПС", "Наличник",
-                        kvd.Data.Otkrivanie == Otkrivanie.Левое || kvd.Data.Otkrivanie == Otkrivanie.ЛевоеВО
-                            ? (float)kvd.Nalichnik(Raspolozhenie.Лев)
-                            : (float)kvd.Nalichnik(Raspolozhenie.Прав));
+                    ИзменитьРазмер("ЗПС", "Наличник", GetNalichnik(kvd));
                     ЗакрытьЭскиз();
                     break;
                 case Command_KVD.Притолока:
@@ -2800,6 +2814,11 @@ namespace DoorsMaketChangers
                 case Command_KVD.Порог:
                     РедактироватьЭскиз("ВНС");
                     ИзменитьРазмер("ВНС", "Длина", (float)kvd.GS_Length);
+                    if (kvd.Name.IndexOf("КВ01", StringComparison.Ordinal) >= 0)
+                    {
+                        ИзменитьРазмер("ВНС", "Зад", (float)kvd.POR_Zad);
+                        ИзменитьРазмер("ВНС", "Перед", (float)kvd.POR_Pered);
+                    }
                     ЗакрытьЭскиз();
                     break;
                 case Command_KVD.РЖК_Замковая:
@@ -2811,6 +2830,19 @@ namespace DoorsMaketChangers
                 default:
                     throw new ArgumentOutOfRangeException(nameof(com), com, null);
             }
+        }
+
+        private float GetNalichnik(KVD kvd, bool zamkovoy = false)
+        {
+            if (zamkovoy)
+            {
+                if (kvd.Data.Otkrivanie == Otkrivanie.Левое || kvd.Data.Otkrivanie == Otkrivanie.ЛевоеВО)
+                    return (float) kvd.Nalichnik(Raspolozhenie.Прав);
+                return (float) kvd.Nalichnik(Raspolozhenie.Лев);
+            }
+            if (kvd.Data.Otkrivanie == Otkrivanie.Левое || kvd.Data.Otkrivanie == Otkrivanie.ЛевоеВО)
+                return (float)kvd.Nalichnik(Raspolozhenie.Лев);
+            return (float)kvd.Nalichnik(Raspolozhenie.Прав);
         }
 
         private void ВысветитьЭлемент(string Name)
