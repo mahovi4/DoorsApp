@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using COM_DoorsLibrary;
 using Excel = Microsoft.Office.Interop.Excel;
 
 public class ExcelSkaner
@@ -412,7 +413,8 @@ public class ExcelSkaner
                 param.Zamok[0].Kod = (int)ZamokNames.Apecs_30_R;
             else if (dataColumns[(int)CollNames.Замок_1_АС].IndexOf("КРИТ ЗВ - 7 РМП") >= 0)
                 param.Zamok[0].Kod = (int)ZamokNames.Crit_7_RPM;
-            else if (dataColumns[(int) CollNames.Замок_1_АС].IndexOf("ECO GBS 81") >= 0)
+            else if (dataColumns[(int) CollNames.Замок_1_АС].IndexOf("ECO GBS 81") >= 0 ||
+                     dataColumns[(int)CollNames.Замок_1_АС].IndexOf("1769/57/65mm PZ") >= 0)
                 param.Zamok[0].Kod = (int) ZamokNames.ECO_GBS_81;
             else if (dataColumns[(int) CollNames.Замок_1_АС].IndexOf("Пробивка под замок клиента (смотри примечание)") >= 0 &&
                      dataColumns[(int) CollNames.Замок_1_АС].IndexOf("Пробивка под замок клиента (смотри вложение)") >= 0)
@@ -426,7 +428,9 @@ public class ExcelSkaner
                                             dataColumns[(int)CollNames.Атрибут] + '\n' +
                                             dataColumns[(int)CollNames.Комментарий];
             }
-            if (string.IsNullOrEmpty(dataColumns[(int)CollNames.Цилиндр_1_АС]) | dataColumns[(int)CollNames.Цилиндр_1_АС].IndexOf("Без пробивки под цилиндр") >= 0)
+            if (string.IsNullOrEmpty(dataColumns[(int)CollNames.Цилиндр_1_АС]) | 
+                dataColumns[(int)CollNames.Цилиндр_1_АС].IndexOf("Без пробивки под цилиндр") >= 0 |
+                dataColumns[(int)CollNames.Цилиндр_1_АС].IndexOf("Цилиндр не может быть использован") >= 0)
                 param.Zamok[0].Cilinder = false;
             else
                 param.Zamok[0].Cilinder = true;
@@ -520,12 +524,23 @@ public class ExcelSkaner
                 ap = dataColumns[(int)CollNames.Антипаника_ПС];
             if (!string.IsNullOrEmpty(ap))
             {
-                if (ap.IndexOf("PB-1300") >= 0)
+                if (ap.IndexOf("PB-1300") >= 0 || ap.IndexOf("1300A - Panic") >= 0)
                     param.SetRuchkaKod((short)i, 0, (short)RuchkaNames.PB_1300);
                 else if (ap.IndexOf("PB-1700 C") >= 0 || ap.IndexOf("PB-1700 с тягами") >= 0)
                     param.SetRuchkaKod((short)i, 0, (short)RuchkaNames.PB_1700C);
                 else if (ap.IndexOf("PB-1700") >= 0)
-                    param.SetRuchkaKod((short)i, 0, (short)RuchkaNames.PB_1700A);
+                {
+                    var ruchka = new RuchkaParam
+                    {
+                        Kod = (short) RuchkaNames.PB_1700A,
+                        KodRuchkaLL = 
+                            dataColumns[(int)CollNames.Ручка_1_АС].IndexOf("на фланце") >= 0 
+                                ? (short)RuchkaNames.Ручка_фланец 
+                                : (short)RuchkaNames.Ручка_черная_планка
+                    };
+
+                    param.SetRuchka((short)i, 0, ruchka);
+                }
                 else if (ap.IndexOf("DL") >= 0)
                     param.SetRuchkaKod((short)i, 0, (short)RuchkaNames.АП_DoorLock);
             }
@@ -590,26 +605,26 @@ public class ExcelSkaner
         if (dataColumns[(int)CollNames.Задвижки].IndexOf("Ночной сторож") >= 0 | 
             dataColumns[(int)CollNames.Комментарий].IndexOf("Ночной сторож") >= 0) 
             zad.Kod = (int)ZadvizhkaNames.Ночной_сторож;
-        else if (dataColumns[(int)CollNames.Задвижки].IndexOf("ЗД-01") >= 0 | 
-                 dataColumns[(int)CollNames.Комментарий].IndexOf("ЗД-01") >= 0) 
-            zad.Kod = (int)ZadvizhkaNames.ЗД_01;
-        else if (dataColumns[(int) CollNames.Задвижки].IndexOf("ЗТ-150") >= 0)
-        {
-            var strCol = dataColumns[(int) CollNames.Задвижки];
-            var strArr = strCol.Split('\n');
-            if (strArr.Length > 0)
-            {
-                var count = strArr
-                    .Count(zash => zash.IndexOf("ЗТ-150") >= 0);
+        //else if (dataColumns[(int)CollNames.Задвижки].IndexOf("ЗД-01") >= 0 | 
+        //         dataColumns[(int)CollNames.Комментарий].IndexOf("ЗД-01") >= 0) 
+        //    zad.Kod = (int)ZadvizhkaNames.ЗД_01;
+        //else if (dataColumns[(int) CollNames.Задвижки].IndexOf("ЗТ-150") >= 0)
+        //{
+        //    var strCol = dataColumns[(int) CollNames.Задвижки];
+        //    var strArr = strCol.Split('\n');
+        //    if (strArr.Length > 0)
+        //    {
+        //        var count = strArr
+        //            .Count(zash => zash.IndexOf("ЗТ-150") >= 0);
 
-                if(count == 1 && param.Porog != (short)PorogNames.Выподающий)
-                    zad.Kod = (int)ZadvizhkaNames.ЗТ_150;
-                else if (count > 1 && param.Porog == (short) PorogNames.Выподающий)
-                    zad.Kod = (int) ZadvizhkaNames.ЗТ_150;
-                else
-                    zad.FromTable = $"Ни хрена не понял!!!\n{strCol}";
-            }
-        }
+        //        if(count == 1 && param.Porog != (short)PorogNames.Выподающий)
+        //            zad.Kod = (int)ZadvizhkaNames.ЗТ_150;
+        //        else if (count > 1 && param.Porog == (short) PorogNames.Выподающий)
+        //            zad.Kod = (int) ZadvizhkaNames.ЗТ_150;
+        //        else
+        //            zad.FromTable = $"Ни хрена не понял!!!\n{strCol}";
+        //    }
+        //}
         //else if (dataColls[(int)CollNames.Задвижки].IndexOf("Торцевой шпингалет") >= 0) 
         //    zad.Kod = (int)ZadvizhkaNames.Торцевой_шпингалет;
         else {
@@ -998,7 +1013,7 @@ public class ExcelSkaner
             param.SetFramugaPar((short)Raspolozhenie.Прав, new FramugaParam() { Type = FramugaType.нет });
         }
 
-        // Макушка "Интек"---------------------------------------------------------------------------------------------------------------------
+        // Макушка "Интек"-----------------------------------------------------------------------------------------------------------------------------
         if (dataColumns[(int)CollNames.Комментарий].IndexOf("под доводчик не должно торчать", StringComparison.Ordinal) >= 0 | 
             dataColumns[(int)CollNames.Комментарий].IndexOf("под доводчик не должно выступать", StringComparison.Ordinal) >= 0 | 
             dataColumns[(int)CollNames.Комментарий].IndexOf("Интек", StringComparison.Ordinal) >= 0) {
@@ -1007,7 +1022,40 @@ public class ExcelSkaner
                  param.Nalichniki[(int)Raspolozhenie.Верх] > 0) param.Intek = true;
         }
 
-        // Запись комментария к изделию-------------------------------------------------------------------------------------------------------------------------------
+        // ОБРАБОТКА ОТБОЙНЫХ ПЛАСТИН------------------------------------------------------------------------------------------------------------------
+        if (dataColumns[(int)CollNames.Комментарий].IndexOf("Отбойная пластина", StringComparison.Ordinal) >= 0)
+        {
+
+            var listOtboyniki = new List<string>();
+            string[] lines = dataColumns[(int)CollNames.Комментарий].Split('\n');
+
+            foreach (var line in lines)
+                if (line.IndexOf("Отбойная пластина", StringComparison.Ordinal) >= 0)
+                    listOtboyniki.Add(line.Substring(line.IndexOf("(")));
+
+            foreach (var s in listOtboyniki)
+            {
+                var position = s.IndexOf("внеш.", StringComparison.Ordinal) >= 0
+                    ? PositionPlastina.Внешняя
+                    : PositionPlastina.Внутренняя;
+
+                var parts = s.Split(' ');
+                if (parts.Length > 4) throw new ArgumentException();
+                if (!int.TryParse(parts[3], out var h)) throw new ArgumentException();
+
+                param.OtboynayaPlastina.Add(new OtboynayaPlastina(h, Stvorka.Активная, position));
+                if (param.WAktiv > 0)
+                    param.OtboynayaPlastina.Add(new OtboynayaPlastina(h, Stvorka.Пассивная, position));
+
+            }
+
+        }
+
+        // Наличие записи о вырезах
+        if (dataColumns[(int) CollNames.Вырезы].IndexOf("ырез") >= 0)
+            param.Virezi = true;
+
+        // Запись комментария к изделию----------------------------------------------------------------------------------------------------------------
         param.Comments = string.IsNullOrEmpty(dataColumns[(int)CollNames.Комментарий]) 
             ? "" 
             : dataColumns[(int)CollNames.Комментарий];
@@ -1143,5 +1191,6 @@ public enum CollNames
     Окно_6_Верт_разположение,
     Окно_6_По_вертикали,
     Номер_Заказа,
+    Вырезы,
     Вывод_Ошибок
 }

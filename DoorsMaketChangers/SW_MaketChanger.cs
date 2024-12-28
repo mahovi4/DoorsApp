@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using COM_DoorsLibrary;
+using SldWorks;
 
 namespace DoorsMaketChangers
 {
@@ -95,28 +96,31 @@ namespace DoorsMaketChangers
             SaveDXF(name);
             CloseMaket();
         }
-
-        private void OpenMaket()
+        public override void Build_Otboynik(OtboynayaPlastina plastina, string num)
         {
-            OpenMaket(RootPath + "/" + MaketName);
+            OpenMaket("Отбойная пластина.SLDPRT");
+            РедактироватьОтбойник(plastina);
+            SaveDXF($"{plastina.Name}_{num}");
         }
-        private void OpenMaket(string maketName)
+
+        private void OpenMaket(string maketName = null)
         {
-            if(File.Exists(maketName))
-                Maket = swApp.OpenDoc6(maketName, 1, 0, "", ref longstatus, ref longwarnings);
+            var mName = maketName ?? MaketName;
+
+            if(File.Exists($"{RootPath}/{mName}"))
+                Maket = swApp.OpenDoc6($"{RootPath}/{mName}", 1, 0, "", ref longstatus, ref longwarnings);
             else
             {
-                Interaction.MsgBox("Файл SolidWorks-макета не найден");
+                Interaction.MsgBox($"Файл SolidWorks-макета '{mName}' не найден");
                 Maket = null;
             }
         }
         private void CloseMaket()
         {
-            if (Maket != null)
-            {
-                swApp.CloseDoc(MaketName);
-                Maket = null;
-            }
+            if (Maket == null) return;
+
+            swApp.CloseDoc(MaketName);
+            Maket = null;
         }
 
         private void SaveDXF(string name)
@@ -152,10 +156,73 @@ namespace DoorsMaketChangers
                     else
                         ВысветитьЭлемент("DM_Нижний отгиб лицевого (активной створки)");
                 }
+
+                if (dm.IsTorcevayaPlastina(0))
+                {
+                    ВысветитьЭлемент("DM_Торцевая пластина_верх (АС)");
+                    ВысветитьЭлемент("DM_Просечки торцевой пластины верх (АС)");
+                    ВысветитьЭлемент("DM_Молярное отверстие на торцевой верх (АС)");
+
+                    if(dm.IsTermoblock(0))
+                        ВысветитьЭлемент("DM_Термоблокератор (верх) в торцевой пластине");
+                }
+
+                if (dm.IsTorcevayaPlastina(1))
+                {
+                    ВысветитьЭлемент("DM_Торцевая пластина_низ (АС)");
+                    ВысветитьЭлемент("DM_Просечки торцевой пластины низ (АС)");
+                    ВысветитьЭлемент("DM_Молярное отверстие на торцевой низ (АС)");
+
+                    if (dm.IsTermoblock(1))
+                        ВысветитьЭлемент("DM_Термоблокератор (низ) в торцевой пластине");
+                }
+
                 if (dm.IsOkno(0))
+                {
                     ВысветитьЭлемент("DM_Окно1 (АС)");
+
+                    if (dm.IsOtsechka(0, 0))
+                    {
+                        ВысветитьЭлемент("DM_Отсечки_Окно1 (ЛЛ)");
+                        ВысветитьЭлемент("DM_Просечки отсечек_Окно1 (ЛЛ)");
+                    }
+
+                    if (dm.IsOtsechka(0, 1))
+                    {
+                        ВысветитьЭлемент("DM_Отсечки_Окно1 (ВЛ)");
+                        ВысветитьЭлемент("DM_Просечки отсечек_Окно1 (ВЛ)");
+                    }
+
+                    if(dm.IsRamka(0, 0))
+                        ВысветитьЭлемент("DM_ППР_Окно1 (ЛЛ)");
+
+                    if (dm.IsRamka(0, 1))
+                        ВысветитьЭлемент("DM_ППР_Окно1 (ВЛ)");
+                }
+
                 if (dm.IsOkno(1))
+                {
                     ВысветитьЭлемент("DM_Окно2 (АС)");
+
+                    if (dm.IsOtsechka(1, 0))
+                    {
+                        ВысветитьЭлемент("DM_Отсечки_Окно2 (ЛЛ)");
+                        ВысветитьЭлемент("DM_Просечки отсечек_Окно2 (ЛЛ)");
+                    }
+
+                    if (dm.IsOtsechka(1, 1))
+                    {
+                        ВысветитьЭлемент("DM_Отсечки_Окно2 (ВЛ)");
+                        ВысветитьЭлемент("DM_Просечки отсечек_Окно2 (ВЛ)");
+                    }
+
+                    if (dm.IsRamka(1, 0))
+                        ВысветитьЭлемент("DM_ППР_Окно2 (ЛЛ)");
+
+                    if (dm.IsRamka(1, 1))
+                        ВысветитьЭлемент("DM_ППР_Окно2 (ВЛ)");
+                }
+
                 if (dm.VirezPodKvadrat_Count >= (short)VirezKvadrat._2_выреза)
                     ВысветитьЭлемент("DM_Вырезы под 2 квадрата в активке");
                 if (dm.VirezPodKvadrat_Count == (short)VirezKvadrat._3_выреза)
@@ -202,9 +269,51 @@ namespace DoorsMaketChangers
                             ВысветитьЭлемент("DM_Нижний отгиб лицевого (пассивной створки)");
                     }
                     if (dm.IsOkno(2))
+                    {
                         ВысветитьЭлемент("DM_Окно3 (ПС)");
+
+                        if (dm.IsOtsechka(2, 0))
+                        {
+                            ВысветитьЭлемент("DM_Отсечки_Окно3 (ЛЛ)");
+                            ВысветитьЭлемент("DM_Просечки отсечек_Окно3 (ЛЛ)");
+                        }
+
+                        if (dm.IsOtsechka(2, 1))
+                        {
+                            ВысветитьЭлемент("DM_Отсечки_Окно3 (ВЛ)");
+                            ВысветитьЭлемент("DM_Просечки отсечек_Окно3 (ВЛ)");
+                        }
+
+                        if (dm.IsRamka(2, 0))
+                            ВысветитьЭлемент("DM_ППР_Окно3 (ЛЛ)");
+
+                        if (dm.IsRamka(2, 1))
+                            ВысветитьЭлемент("DM_ППР_Окно3 (ВЛ)");
+                    }
+
                     if (dm.IsOkno(3))
+                    {
                         ВысветитьЭлемент("DM_Окно4 (ПС)");
+
+                        if (dm.IsOtsechka(3, 0))
+                        {
+                            ВысветитьЭлемент("DM_Отсечки_Окно4 (ЛЛ)");
+                            ВысветитьЭлемент("DM_Просечки отсечек_Окно4 (ЛЛ)");
+                        }
+
+                        if (dm.IsOtsechka(3, 1))
+                        {
+                            ВысветитьЭлемент("DM_Отсечки_Окно4 (ВЛ)");
+                            ВысветитьЭлемент("DM_Просечки отсечек_Окно4 (ВЛ)");
+                        }
+
+                        if (dm.IsRamka(3, 0))
+                            ВысветитьЭлемент("DM_ППР_Окно4 (ЛЛ)");
+
+                        if (dm.IsRamka(3, 1))
+                            ВысветитьЭлемент("DM_ППР_Окно4 (ВЛ)");
+                    }
+
                     if (dm.IsTorcShpingalet(0))
                         ВысветитьЭлемент("DM_Верхний шпингалет");
                     if (dm.IsTorcShpingalet(1))
@@ -331,13 +440,15 @@ namespace DoorsMaketChangers
                 {
                     for (var y = 0; y < 2; y++)
                     {
-                        var sh = dm.Ruchka_Kod((short)i, (short)y);
-                        if (dm.Ruchka_Kod((short)i, (short)y) > 0)
-                        {
-                            var s = dm.Ruchka_VirezName((short)i, (short)y);
-                            if (!dm.Ruchka_VirezName((short)i, (short)y).Equals("_"))
-                                ВысветитьЭлемент(dm.Ruchka_VirezName((short)i, (short)y));
-                        }
+                        if (dm.Ruchka_Kod((short) i, (short) y) <= 0) 
+                            continue;
+
+                        if (!dm.Ruchka_VirezName((short)i, (short)y).Equals("_"))
+                            ВысветитьЭлемент(dm.Ruchka_VirezName((short)i, (short)y));
+
+                        var r = dm.Ruchka((short) i, (short) y);
+                        if (r.Kod == (short) RuchkaNames.PB_1700A && r.KodRuchkaLL == (short)RuchkaNames.Ручка_черная_планка)
+                            ВысветитьЭлемент("DM_1700A_стяжки ручки на планке");
                     }
                 }
                 // ---Задвижки------------------------------------------
@@ -370,7 +481,8 @@ namespace DoorsMaketChangers
                         if (dm.IsTorcShpingalet((short)Raspolozhenie.Верх))
                         {
                             //ВысветитьЭлемент("DM_ЗД-01 на внутреннем пассивки при выпадающем пороге");
-                            ВысветитьЭлемент("DM_ЗТ-150 на внутреннем пассивки при выпадающем пороге");
+                            ВысветитьЭлемент($"{dm.GetZadvizhkaNizName()} на внутреннем пассивки при выпадающем пороге");
+                            //ВысветитьЭлемент("DM_ЗД-10 на внутреннем пассивки при выпадающем пороге");
                         }
                     }
                 }
@@ -452,6 +564,16 @@ namespace DoorsMaketChangers
                         ЗакрытьЭскиз();
                     }
                 }
+
+                if (dm.IsTorcevayaPlastina(0))
+                {
+                    РедактироватьЭскиз("DM_ТП_В_АС");
+                    ИзменитьРазмер("DM_ТП_В_АС", "Ширина", (float)dm.TorcevayaPlastina(0).Width);
+                    ИзменитьРазмер("DM_ТП_В_АС", "ОтступПетлевой", (float)dm.TorcevayaPlastina(0).OtstupPetlya);
+                    ИзменитьРазмер("DM_ТП_В_АС", "ОтступЗамковой", (float)dm.TorcevayaPlastina(0).OtstupZamok);
+                    ЗакрытьЭскиз();
+                }
+
                 if (dm.IsSekPloskost(Stvorka.Активная))
                 {
                     РедактироватьЭскиз("DM_Вставка ВЛАС");
@@ -460,10 +582,26 @@ namespace DoorsMaketChangers
                 }
                 if (dm.Protivos_Count > 0)
                 {
-                    РедактироватьЭскиз("DM_Противосъемник1 АС");
-                    ИзменитьРазмер("DM_Противосъемник1 АС", "От низа", dm.Protivos_OtPola(0));
-                    ИзменитьРазмер("DM_Противосъемник1 АС", "От края", (float)dm.Protivos_OtKraya);
-                    ЗакрытьЭскиз();
+                    switch (dm.Protivos_Count)
+                    {
+                        case 1:
+                            РедактироватьЭскиз("DM_Противосъемник1 АС");
+                            ИзменитьРазмер("DM_Противосъемник1 АС", "ОтПола", dm.Protivos_OtPola(0));
+                            ИзменитьРазмер("DM_Противосъемник1 АС", "От края", (float)dm.Protivos_OtKraya);
+                            ЗакрытьЭскиз();
+                            break;
+                        case 2:
+                            РедактироватьЭскиз("DM_Противосъемник1 АС");
+                            ИзменитьРазмер("DM_Противосъемник1 АС", "ОтПола", dm.AnkerOtPola(1));
+                            ИзменитьРазмер("DM_Противосъемник1 АС", "От края", (float)dm.Protivos_OtKraya);
+                            ЗакрытьЭскиз();
+                            РедактироватьЭскиз("DM_Противосъемник2 АС");
+                            ИзменитьРазмер("DM_Противосъемник2 АС", "ОтПола", dm.AnkerOtPola(3));
+                            ИзменитьРазмер("DM_Противосъемник2 АС", "От края", (float)dm.Protivos_OtKraya);
+                            ЗакрытьЭскиз();
+                            break;
+
+                    }
                 }
                 if (dm.IsVipadPorog)
                 {
@@ -535,6 +673,7 @@ namespace DoorsMaketChangers
                         ЗакрытьЭскиз();
                     }
                 }
+                
                 //Редактирование привязок глазка
                 if (dm.IsGlazok(0))
                 {
@@ -746,15 +885,29 @@ namespace DoorsMaketChangers
                 {
                     if (dm.IsOkno(i))
                     {
-                        РедактироватьЭскиз("DM_Окно" + (i + 1));
-                        ИзменитьРазмер("DM_Окно" + (i + 1), "От пола", (float)dm.Okno_OtPola(i));
-                        ИзменитьРазмер("DM_Окно" + (i + 1), "От края ЛЛ", (float)dm.Okno_OtKraya(i, 0));
-                        ИзменитьРазмер("DM_Окно" + (i + 1), "Ширина ЛЛ", dm.Okno_Width(i, 0));
-                        ИзменитьРазмер("DM_Окно" + (i + 1), "Высота ЛЛ", dm.Okno_Height(i, 0));
-                        ИзменитьРазмер("DM_Окно" + (i + 1), "От края ВЛ", (float)dm.Okno_OtKraya(i, 1));
-                        ИзменитьРазмер("DM_Окно" + (i + 1), "Ширина ВЛ", dm.Okno_Width(i, 1));
-                        ИзменитьРазмер("DM_Окно" + (i + 1), "Высота ВЛ", dm.Okno_Height(i, 1));
+                        РедактироватьЭскиз($"DM_Окно{i + 1}");
+                        ИзменитьРазмер($"DM_Окно{i + 1}", "От пола", (float)dm.Okno_OtPola(i, 0));
+                        ИзменитьРазмер($"DM_Окно{i + 1}", "От края ЛЛ", (float)dm.Okno_OtKraya(i, 0));
+                        ИзменитьРазмер($"DM_Окно{i + 1}", "От края ВЛ", (float)dm.Okno_OtKraya(i, 1));
+                        ИзменитьРазмер($"DM_Окно{i + 1}", "Ширина ЛЛ", dm.Okno_Width(i, 0));
+                        ИзменитьРазмер($"DM_Окно{i + 1}", "Ширина ВЛ", dm.Okno_Width(i, 1));
+                        ИзменитьРазмер($"DM_Окно{i + 1}", "Высота ЛЛ", dm.Okno_Height(i, 0));
+                        ИзменитьРазмер($"DM_Окно{i + 1}", "Высота ВЛ", dm.Okno_Height(i, 1));
                         ЗакрытьЭскиз();
+
+                        if (dm.IsOtsechka(i, 0))
+                        {
+                            РедактироватьЭскиз($"DM_Отс_Окно{i + 1}_ЛЛ");
+                            ИзменитьРазмер($"DM_Отс_Окно{i + 1}_ЛЛ", "ШиринаОтсечки", (float)dm.Otsechka(i).Width);
+                            ЗакрытьЭскиз();
+                        }
+
+                        if (dm.IsOtsechka(i, 1))
+                        {
+                            РедактироватьЭскиз($"DM_Отс_Окно{i + 1}_ВЛ");
+                            ИзменитьРазмер($"DM_Отс_Окно{i + 1}_ВЛ", "ШиринаОтсечки", (float)dm.Otsechka(i).Width);
+                            ЗакрытьЭскиз();
+                        }
                     }
                     if (dm.Reshetka_Type(i) == eReshetka.ПП_решетка)
                     {
@@ -850,6 +1003,14 @@ namespace DoorsMaketChangers
             {
                 ВысветитьЭлемент("DM_К1/К2 стойка двери");
                 ВысветитьЭлемент("DM_Анкерные отверстия К1/К2");
+                //ВысветитьЭлемент("DM_РЖК стойки-низ");
+                //if (dm.Height > 1290)
+                //{
+                //    ВысветитьЭлемент("DM_РЖК стойки-верх");
+                //    ВысветитьЭлемент("Технологические Вырезы в РЖКС-верх");
+                //}
+                //ВысветитьЭлемент("DM_Анкерные отверстия РЖК");
+
                 if (dm.DownZanizhenieStoyki(pos) > 0d)
                     ВысветитьЭлемент("DM_Удлинение стойки К1/К2 при наличнике снизу");
                 if (dm.UpZaglushkaNSStoyki(pos) > 0)
@@ -909,6 +1070,14 @@ namespace DoorsMaketChangers
             {
                 ВысветитьЭлемент("DM_К3 стойка двери");
                 ВысветитьЭлемент("DM_Анкерные отверстия К3");
+                //ВысветитьЭлемент("DM_РЖК стойки-низ");
+                //if (dm.Height > 1290)
+                //{
+                //    ВысветитьЭлемент("DM_РЖК стойки-верх");
+                //    ВысветитьЭлемент("Технологические Вырезы в РЖКС-верх");
+                //}
+                //ВысветитьЭлемент("DM_Анкерные отверстия РЖК");
+
                 if (dm.DownZanizhenieStoyki(pos) > 0d)
                     ВысветитьЭлемент("DM_Удлинение стойки К3 при наличнике снизу");
                 if (dm.UpZaglushkaNSStoyki(pos) > 0)
@@ -1144,6 +1313,29 @@ namespace DoorsMaketChangers
                     ИзменитьРазмер("DM_Заглушка К1 нижняя", "Высота", dm.DownZaglushkaNSStoyki(pos));
                     ЗакрытьЭскиз();
                 }
+
+                //РедактироватьЭскиз("РЖКС-низ");
+                //ИзменитьРазмер("РЖКС-низ", "ШиринаРЖК", dm.RzkWidth(pos));
+                //ИзменитьРазмер("РЖКС-низ", "Высота", dm.Height > 1290 ? 1090 : dm.HeightStoyki(pos));
+                //ЗакрытьЭскиз();
+                //if (dm.Height > 1290)
+                //{
+                //    РедактироватьЭскиз("РЖКС-верх");
+                //    ИзменитьРазмер("РЖКС-верх", "ШиринаРЖК", dm.RzkWidth(pos));
+                //    ИзменитьРазмер("РЖКС-верх", "ВысотаРЖК", dm.RzkHeight(pos));
+                //    ЗакрытьЭскиз();
+                //    РедактироватьЭскиз("ТВ_РЖКС-верх");
+                //    ИзменитьРазмер("ТВ_РЖКС-верх", "Отступ", 100);
+                //    ЗакрытьЭскиз();
+                //}
+
+                //РедактироватьЭскиз("АнкерРЖКС");
+                //ИзменитьРазмер("АнкерРЖКС", "ОтКрая", dm.RzkWidth(pos)/2);
+                //ИзменитьРазмер("АнкерРЖКС", "ДоАнкера1", dm.AnkerOtPola(1));
+                //ИзменитьРазмер("АнкерРЖКС", "ДоАнкера2", dm.AnkerOtPola(2));
+                //ИзменитьРазмер("АнкерРЖКС", "ДоАнкера3", dm.AnkerOtPola(3));
+                //ЗакрытьЭскиз();
+                
             }
             //Макушка К1
             if (conf == 6)
@@ -1226,6 +1418,27 @@ namespace DoorsMaketChangers
                     ИзменитьРазмер("DM_Заглушка К3 нижняя", "Высота", dm.DownZaglushkaNSStoyki(pos));
                     ЗакрытьЭскиз();
                 }
+
+                //РедактироватьЭскиз("РЖКС-низ");
+                //ИзменитьРазмер("РЖКС-низ", "ШиринаРЖК", dm.RzkWidth(pos));
+                //ИзменитьРазмер("РЖКС-низ", "Высота", dm.Height > 1290 ? 1090 : dm.HeightStoyki(pos));
+                //ЗакрытьЭскиз();
+                //if (dm.Height > 1290)
+                //{
+                //    РедактироватьЭскиз("РЖКС-верх");
+                //    ИзменитьРазмер("РЖКС-верх", "ШиринаРЖК", dm.RzkWidth(pos));
+                //    ИзменитьРазмер("РЖКС-верх", "ВысотаРЖК", dm.RzkHeight(pos));
+                //    ЗакрытьЭскиз();
+                //    РедактироватьЭскиз("ТВ_РЖКС-верх");
+                //    ИзменитьРазмер("ТВ_РЖКС-верх", "Отступ", 100);
+                //    ЗакрытьЭскиз();
+                //}
+                //РедактироватьЭскиз("АнкерРЖКС");
+                //ИзменитьРазмер("АнкерРЖКС", "ОтКрая", dm.RzkWidth(pos) / 2);
+                //ИзменитьРазмер("АнкерРЖКС", "ДоАнкера1", dm.AnkerOtPola(1));
+                //ИзменитьРазмер("АнкерРЖКС", "ДоАнкера2", dm.AnkerOtPola(2));
+                //ИзменитьРазмер("АнкерРЖКС", "ДоАнкера3", dm.AnkerOtPola(3));
+                //ЗакрытьЭскиз();
             }
             //Макушка К3
             if (conf == 10)
@@ -2397,7 +2610,7 @@ namespace DoorsMaketChangers
                     switch (odl.Zamok((short)com))
                     {
                         case (int)ZamokNames.ПП:
-
+                            ВысветитьЭлемент("ODL_ПП(стандарт) в профиле пассивки");
                             break;
                         case (int)ZamokNames.Просам_ЗВ_8:
                             ВысветитьЭлемент("ODL_ЗВ8 в профиле пассивки");
@@ -2450,7 +2663,7 @@ namespace DoorsMaketChangers
         }
         private void РедактироватьODL(ref ODL odl, Command_ODL com)
         {
-            short conf = GetConf(com, odl.Otkrivanie);
+            var conf = GetConf(com, odl.Otkrivanie);
             switch (conf)
             {
                 case 0:
@@ -2617,11 +2830,10 @@ namespace DoorsMaketChangers
                         }
                     }
 
-                    if(kvd.Data.Kod == 1 && 
-                            (kvd.Data.Otkrivanie == Otkrivanie.ЛевоеВО || kvd.Data.Otkrivanie == Otkrivanie.ПравоеВО) && 
-                            kvd.Data.Zadvizhka.Kod == (short)ZadvizhkaNames.Ночной_сторож)
+                    if((kvd.Data.Otkrivanie == Otkrivanie.ЛевоеВО || kvd.Data.Otkrivanie == Otkrivanie.ПравоеВО) 
+                       && kvd.Data.Zadvizhka.Kod == (short)ZadvizhkaNames.Ночной_сторож)
                             ВысветитьЭлемент("Ночной_сторож");
-                    if (kvd.Data.Kod != 1 && kvd.Data.Kod != 50 && kvd.Data.Zadvizhka.Kod == (short)ZadvizhkaNames.Ночной_сторож)
+                    if (kvd.Data.Kod != 1 && kvd.Data.Kod != 50 && kvd.Data.Kod != 54 && kvd.Data.Kod != 55 && kvd.Data.Zadvizhka.Kod == (short)ZadvizhkaNames.Ночной_сторож)
                         ВысветитьЭлемент("Ночной_сторож");
                     if(kvd.Data.Kod == 50 && (kvd.Data.Otkrivanie == Otkrivanie.ЛевоеВО || kvd.Data.Otkrivanie == Otkrivanie.ПравоеВО))
                         ВысветитьЭлемент("Ночной_сторож");
@@ -2645,10 +2857,13 @@ namespace DoorsMaketChangers
 
                     if (kvd.Data.Kod != 50 && kvd.Data.Zadvizhka.Kod == (short)ZadvizhkaNames.Ночной_сторож)
                         ВысветитьЭлемент("Ночной_сторож");
-                    if (kvd.Data.Kod == 50 && kvd.Data.Zadvizhka.Kod == (short) ZadvizhkaNames.Ночной_сторож && 
-                        (kvd.Data.Otkrivanie == Otkrivanie.Левое || kvd.Data.Otkrivanie == Otkrivanie.Правое))
-                        ВысветитьЭлемент("Ночной_сторож");
+                    if (kvd.Data.Kod == 50 && kvd.Data.Zadvizhka.Kod == (short) ZadvizhkaNames.Ночной_сторож)
+                    {
+                        ВысветитьЭлемент("Ночной_сторож_тело");
 
+                        if(kvd.Data.Otkrivanie == Otkrivanie.Левое || kvd.Data.Otkrivanie == Otkrivanie.Правое)
+                            ВысветитьЭлемент("Ночной_сторож_вертушек");
+                    }
                     break;
                 }
                 case Command_KVD.Замковой_профиль:
@@ -2677,7 +2892,7 @@ namespace DoorsMaketChangers
                 case Command_KVD.Петлевой_профиль:
                 {
                     ВысветитьЭлемент("Противосъемники");
-                    if(kvd.Data.Kod == 1 && kvd.Data.Protivos == 2)
+                    if((kvd.Data.Kod == 1 && kvd.Data.Protivos == 2) || kvd.Data.Kod == 54 || kvd.Data.Kod == 55)
                         ВысветитьЭлемент("3-ий противосъем");
 
                     ВысветитьЭлемент("Петли");
@@ -2728,9 +2943,9 @@ namespace DoorsMaketChangers
                     break;
                 }
                 case Command_KVD.Петлевая_стойка:
-                    if(kvd.Data.Kod == 1)
+                    if(kvd.Data.Kod == 1 || kvd.Data.Kod == 54 || kvd.Data.Kod == 55)
                         ВысветитьЭлемент("Противосъемники");
-                    if(kvd.Data.Kod == 1 && kvd.Data.Protivos == 2)
+                    if((kvd.Data.Kod == 1 && kvd.Data.Protivos == 2) || kvd.Data.Kod == 54 || kvd.Data.Kod == 55)
                         ВысветитьЭлемент("3-ий противосъем");
 
                     if (kvd.Data.LicPanel && kvd.GetNalichnik(false) > 20)
@@ -2759,7 +2974,9 @@ namespace DoorsMaketChangers
                     РедактироватьЭскиз("ЛЛ");
                     ИзменитьРазмер("ЛЛ", "Высота", (float)kvd.LL_Height);
                     ИзменитьРазмер("ЛЛ", "Ширина", (float)kvd.LL_Width);
-                    if(kvd.Name.IndexOf("КВ01", StringComparison.Ordinal) >= 0)
+                    if(kvd.Name.IndexOf("КВ01", StringComparison.Ordinal) >= 0 
+                       || kvd.Name.IndexOf("КВ10", StringComparison.Ordinal) >= 0
+                       || kvd.Name.IndexOf("КВ11", StringComparison.Ordinal) >= 0)
                         ИзменитьРазмер("ЛЛ", "ОтПола", (float)kvd.LL_OtPola);
                     ЗакрытьЭскиз();
                     break;
@@ -2773,6 +2990,14 @@ namespace DoorsMaketChangers
                 case Command_KVD.Петлевой_профиль:
                     РедактироватьЭскиз("ЗПП");
                     ИзменитьРазмер("ЗПП", "Длина", (float)kvd.VP_Length);
+                    if (kvd.Name.IndexOf("КВ01", StringComparison.Ordinal) >= 0 
+                        || kvd.Name.IndexOf("КВ10", StringComparison.Ordinal) >= 0)
+                    {
+                        ИзменитьРазмер("ЗПП", "ЛЛ_ОтПола", (float) kvd.LL_OtPola);
+                        if(com == Command_KVD.Петлевой_профиль)
+                            ИзменитьРазмер("Противосъем", "ОтНиза", (float)kvd.ProtivosOtstup);
+                    }
+
                     if(com == Command_KVD.Петлевой_профиль && kvd.Name == "КВ01c")
                         ИзменитьРазмер("ЗПП", "Ширина", (float)94.08);
                     ЗакрытьЭскиз();
@@ -2814,7 +3039,9 @@ namespace DoorsMaketChangers
                 case Command_KVD.Порог:
                     РедактироватьЭскиз("ВНС");
                     ИзменитьРазмер("ВНС", "Длина", (float)kvd.GS_Length);
-                    if (kvd.Name.IndexOf("КВ01", StringComparison.Ordinal) >= 0)
+                    if (kvd.Name.IndexOf("КВ01", StringComparison.Ordinal) >= 0
+                        || kvd.Name.IndexOf("КВ10", StringComparison.Ordinal) >= 0
+                        || kvd.Name.IndexOf("КВ11", StringComparison.Ordinal) >= 0)
                     {
                         ИзменитьРазмер("ВНС", "Зад", (float)kvd.POR_Zad);
                         ИзменитьРазмер("ВНС", "Перед", (float)kvd.POR_Pered);
@@ -2825,6 +3052,11 @@ namespace DoorsMaketChangers
                 case Command_KVD.РЖК_Петлевая:
                     РедактироватьЭскиз("РЖК");
                     ИзменитьРазмер("РЖК", "Длина", (float)kvd.RZK_Length);
+                    ЗакрытьЭскиз();
+                    break;
+                case Command_KVD.РЖ_полотна:
+                    РедактироватьЭскиз("РЖП");
+                    ИзменитьРазмер("РЖП", "Длина", (float)kvd.RZP_Lengnth);
                     ЗакрытьЭскиз();
                     break;
                 default:
@@ -2993,6 +3225,13 @@ namespace DoorsMaketChangers
                 }
                 ЗакрытьЭскиз();
             }
+        }
+        private void РедактироватьОтбойник(OtboynayaPlastina plastina)
+        {
+            РедактироватьЭскиз("Пластина");
+            ИзменитьРазмер("Пластина", "Высота", plastina.Height);
+            ИзменитьРазмер("Пластина", "Ширина", plastina.Width);
+            ЗакрытьЭскиз();
         }
     }
 }

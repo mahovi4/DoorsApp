@@ -21,6 +21,7 @@ namespace DoorsMaketChangers
         public abstract void Build_VM(DVM vm, Command_VM com);
         public abstract void Build_ODL(ODL odl, Command_ODL com);
         public abstract void Build_KVD(KVD kvd, Command_KVD com, string name);
+        public abstract void Build_Otboynik(OtboynayaPlastina plastina, string num);
         public abstract void Exit();
     }
 
@@ -45,7 +46,8 @@ namespace DoorsMaketChangers
         Левая_стойка,
         Правя_стойка,
         Притолока,
-        Порог
+        Порог,
+        Отбойники
     }
     public enum Command_LM
     {

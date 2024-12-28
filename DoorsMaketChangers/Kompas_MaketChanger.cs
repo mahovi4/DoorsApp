@@ -42,6 +42,11 @@ namespace DoorsMaketChangers
             throw new NotImplementedException();
         }
 
+        public override void Build_Otboynik(OtboynayaPlastina plastina, string num)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void Exit()
         {
             kompas5.Quit();
@@ -49,41 +54,48 @@ namespace DoorsMaketChangers
 
         public override void Build_DM(DM dm, Command_DM com)
         {
-            switch (com)
-            {
-                case Command_DM.Полотна:
-                case Command_DM.Полотна2:
-                    Build_StvorkaDM(Stvorka.Активная, ref dm);
-                    if (dm.IsPassivka)
-                        Build_StvorkaDM(Stvorka.Пассивная, ref dm);
-                    break;
-                case Command_DM.Левая_стойка:
-                case Command_DM.Правя_стойка:
-                    Raspolozhenie pos = com == Command_DM.Левая_стойка ? Raspolozhenie.Лев : Raspolozhenie.Прав;
-                    Build_StoykaDM(pos, ref dm);
-                    break;
-                case Command_DM.Притолока:
-                    Build_PritolokaDM(Raspolozhenie.Верх, ref dm);
-                    break;
-                case Command_DM.Порог:
-                    if (dm.Stoyka_Type(Raspolozhenie.Ниж) > 0 & dm.Stoyka_Type(Raspolozhenie.Ниж) < 5)
-                        Build_PritolokaDM(Raspolozhenie.Ниж, ref dm);
-                    else if (dm.Stoyka_Type(Raspolozhenie.Ниж) > 5)
-                        Build_PorogDM(ref dm);
-                    else
-                        return;
-                    break;
-                default:
-                    return;
-            }
-            ClearMaket();
-            SaveMaket_DXF(dm.Name((short)com));
-            System.Threading.Thread.Sleep(1000);
-            CloseMaket();
+            //CreateMaket();
+            //switch (com)
+            //{
+            //    case Command_DM.Полотна:
+            //    case Command_DM.Полотна2:
+            //        //Build_StvorkaDM(Stvorka.Активная, ref dm);
+
+            //        if (dm.IsPassivka)
+            //            //Build_StvorkaDM(Stvorka.Пассивная, ref dm);
+            //        break;
+            //    case Command_DM.Левая_стойка:
+            //    case Command_DM.Правя_стойка:
+            //        Raspolozhenie pos = com == Command_DM.Левая_стойка ? Raspolozhenie.Лев : Raspolozhenie.Прав;
+            //        Build_StoykaDM(pos, ref dm);
+            //        break;
+            //    case Command_DM.Притолока:
+            //        Build_PritolokaDM(Raspolozhenie.Верх, ref dm);
+            //        break;
+            //    case Command_DM.Порог:
+            //        if (dm.Stoyka_Type(Raspolozhenie.Ниж) > 0 & dm.Stoyka_Type(Raspolozhenie.Ниж) < 5)
+            //            Build_PritolokaDM(Raspolozhenie.Ниж, ref dm);
+            //        else if (dm.Stoyka_Type(Raspolozhenie.Ниж) > 5)
+            //            Build_PorogDM(ref dm);
+            //        else
+            //            return;
+            //        break;
+            //    default:
+            //        return;
+            //}
+            //ClearMaket();
+            //SaveMaket_DXF(dm.Name((short)com));
+            //System.Threading.Thread.Sleep(1000);
+            //CloseMaket();
         }
         public override void Build_LM(LM lm, Command_LM com) { }
         public override void Build_VM(DVM vm, Command_VM com) { }
         public override void Build_ODL(ODL odl, Command_ODL com) { }
+
+        private void CreateStvorkaDM(Stvorka stvorka, ref DM dm)
+        {
+
+        }
 
         private void Build_StvorkaDM(Stvorka stvorka, ref DM dm)
         {
@@ -345,7 +357,7 @@ namespace DoorsMaketChangers
 
         private void CreateMaket()
         {
-            Documents docs = kompas7.Documents;
+            var docs = kompas7.Documents;
             maketDok = docs.AddWithDefaultSettings(DocumentTypeEnum.ksDocumentFragment);
             maket = (ksDocument2D)kompas5.ActiveDocument2D();
             maket7 = (IKompasDocument2D)kompas7.ActiveDocument;
@@ -415,6 +427,10 @@ namespace DoorsMaketChangers
             param.xBase = insX;
             param.yBase = insY;
             return fr.ksInsertFragment(def, false, param);
+        }
+        private int InsertFragmentDef(string fragmentFullName)
+        {
+            return InsertFragment(fragmentFullName, 0, 0, 0);
         }
         private void ChangeVariables(int insertfr, Dictionary<string, float> variables)
         {

@@ -480,13 +480,13 @@ public partial class InWork : Form
     //Подсчет общего количества выходных DXF файлов для расчетных изделий
     private short CalculateDXF(ref Constructor constr, runCommand com)
     {
-        short count = 0;
+        var count = 0;
         if (constr.DMs.Length > 0)
         {
             var dms = constr.DMs;
             if (com == runCommand.Общий)
             {
-                foreach (DM dm in dms)
+                foreach (var dm in dms)
                 {
                     count += 1;
                     if (cons.CompareKod(dm.Kod, "ДМ-2"))
@@ -496,6 +496,8 @@ public partial class InWork : Form
                         if (dm.IsTorcShpingalet((short)Raspolozhenie.Ниж) | dm.IsOtvAntipan((short)Raspolozhenie.Ниж))
                             count += 1;
                     }
+
+                    count += dm.OtboynayaPlastini.Length;
                 }
             }
             else if (com == runCommand.Стойки_Полотна)
@@ -505,6 +507,7 @@ public partial class InWork : Form
                     count += 4;
                     if (dm.Stoyka_Type(Raspolozhenie.Ниж) > 0)
                         count += 1;
+                    count += dm.OtboynayaPlastini.Length;
                 }
             }
             else
@@ -555,7 +558,7 @@ public partial class InWork : Form
             }
         }
 
-        return count;
+        return (short)count;
     }
     //Подсчет общего количества выходных DXF файлов для не расчетных изделий (КВ..)
     private static short CalculateDXF(IEnumerable<KVD> list)
@@ -679,13 +682,13 @@ public partial class InWork : Form
         var ctor = new Constructor();
         MaketChanger mCh;
         var mChType = int.Parse(Program.ini.ReadKey("Global", "MAKET_CHANGER"));
-        if (mChType == 0)
+        //if (mChType == 0)
             mCh = new SW_MaketChanger(Program.ini.ReadKey("Directoryes", "DIR_MAKET"), 
                 Program.ini.ReadKey("Global", "G_MAKET"), 
                 Program.ini.ReadKey("Directoryes", "DIR_DXF"));
-        else
-            mCh = new Kompas_MaketChanger(Program.ini.ReadKey("Directoryes", "DIR_MAKET"),
-                Program.ini.ReadKey("Directoryes", "DIR_DXF"));
+        //else
+        //    mCh = new Kompas_MaketChanger(Program.ini.ReadKey("Directoryes", "DIR_MAKET"),
+        //        Program.ini.ReadKey("Directoryes", "DIR_DXF"));
         short fullDXFcount;
 
         SetBtnVisible(false);
@@ -777,6 +780,14 @@ public partial class InWork : Form
                                     }
                                 }
                             }
+                            if (dm.OtboynayaPlastini.Length > 0)
+                            {
+                                foreach (var plastina in dm.OtboynayaPlastini)
+                                {
+                                    await Task.Run(() => mCh.Build_Otboynik(plastina, dm.Num));
+                                    CompliteDxf();
+                                }
+                            }
                             if (string.IsNullOrEmpty(dm.Problems))
                                 MessageToRow(SearchRowByNum(dm.Num), goodColor, "");
                             else
@@ -796,7 +807,10 @@ public partial class InWork : Form
                             await Task.Run(() => mCh.Build_DM(dm, Command_DM.Порог));
                             CompliteDxf();
                         }
-
+                        if (string.IsNullOrEmpty(dm.Problems))
+                            MessageToRow(SearchRowByNum(dm.Num), goodColor, "");
+                        else
+                            MessageToRow(SearchRowByNum(dm.Num), atColor, dm.Problems);
                     }
                 }
                 else
@@ -1055,6 +1069,9 @@ public partial class InWork : Form
                     kvds.Add(new KV08(data, cons));
                     break;
                 case "КВ09":
+                    break;
+                case "КВ10":
+                    kvds.Add(new KV10(data, cons));
                     break;
             }
         }
