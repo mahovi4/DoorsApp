@@ -489,15 +489,10 @@ public partial class InWork : Form
                 foreach (var dm in dms)
                 {
                     count += 1;
-                    if (cons.CompareKod(dm.Kod, "ДМ-2"))
-                    {
-                        if (dm.IsTorcShpingalet((short)Raspolozhenie.Верх) | dm.IsOtvAntipan((short)Raspolozhenie.Верх))
-                            count += 1;
-                        if (dm.IsTorcShpingalet((short)Raspolozhenie.Ниж) | dm.IsOtvAntipan((short)Raspolozhenie.Ниж))
-                            count += 1;
-                    }
 
                     count += dm.OtboynayaPlastini.Length;
+
+                    if(dm.IsRzh) count += 1;
                 }
             }
             else if (com == runCommand.Стойки_Полотна)
@@ -508,6 +503,7 @@ public partial class InWork : Form
                     if (dm.Stoyka_Type(Raspolozhenie.Ниж) > 0)
                         count += 1;
                     count += dm.OtboynayaPlastini.Length;
+                    if (dm.IsRzh) count += 1;
                 }
             }
             else
@@ -544,15 +540,8 @@ public partial class InWork : Form
             if (com == runCommand.Общий)
             {
                 foreach (ODL odl in constr.ODLs)
-                {
-                    if(odl.IsPassivka)
-                        count += 7;
-                    else
-                        count += 6;
-                    if (odl.Nalichnik(Raspolozhenie.Ниж) > 0)
-                        count ++;
-                    if ((odl.Otkrivanie == Otkrivanie.ЛевоеВО || odl.Otkrivanie == Otkrivanie.ПравоеВО) && odl.Porog > 0)
-                        count ++;
+                { 
+                    count += odl.FileCount;
                 }
                 
             }
@@ -682,10 +671,13 @@ public partial class InWork : Form
         var ctor = new Constructor();
         MaketChanger mCh;
         var mChType = int.Parse(Program.ini.ReadKey("Global", "MAKET_CHANGER"));
+
         //if (mChType == 0)
-            mCh = new SW_MaketChanger(Program.ini.ReadKey("Directoryes", "DIR_MAKET"), 
-                Program.ini.ReadKey("Global", "G_MAKET"), 
-                Program.ini.ReadKey("Directoryes", "DIR_DXF"));
+        mCh = new SW_MaketChanger(Program.ini.ReadKey("Directoryes", "DIR_MAKET"),
+            Program.ini.ReadKey("Global", "G_MAKET"),
+            Program.ini.ReadKey("Directoryes", "DIR_DXF"));
+        //mCh = new FileCreator(Program.ini.ReadKey("Directoryes", "DIR_MAKET"),
+        //    Program.ini.ReadKey("Directoryes", "DIR_DXF"));
         //else
         //    mCh = new Kompas_MaketChanger(Program.ini.ReadKey("Directoryes", "DIR_MAKET"),
         //        Program.ini.ReadKey("Directoryes", "DIR_DXF"));
@@ -760,34 +752,22 @@ public partial class InWork : Form
                         {
                             await Task.Run(() => mCh.Build_DM(dm, Command_DM.Полотна));
                             CompliteDxf();
-                            if (com == runCommand.Общий)
+
+                            if (dm.IsRzh)
                             {
-                                if (cons.CompareKod(dm.Kod, "ДМ-2"))
-                                {
-                                    if (dm.IsTorcShpingalet((int)Raspolozhenie.Верх) | 
-                                        dm.IsAnkerInPritoloka | 
-                                        dm.IsOtvAntipan((int)Raspolozhenie.Верх))
-                                    {
-                                        await Task.Run(() => mCh.Build_DM(dm, Command_DM.Притолока));
-                                        CompliteDxf();
-                                    }
-                                    if (dm.Stoyka_Type(Raspolozhenie.Ниж) > 0 & 
-                                        (dm.IsTorcShpingalet((int)Raspolozhenie.Ниж) | 
-                                         dm.IsOtvAntipan((int)Raspolozhenie.Ниж)))
-                                    {
-                                        await Task.Run(() => mCh.Build_DM(dm, Command_DM.Порог));
-                                        CompliteDxf();
-                                    }
-                                }
+                                await Task.Run(() => mCh.Build_DM(dm, Command_DM.РЖП));
+                                CompliteDxf();
                             }
+
                             if (dm.OtboynayaPlastini.Length > 0)
                             {
-                                foreach (var plastina in dm.OtboynayaPlastini)
+                                for (var i=0; i<dm.OtboynayaPlastini.Length; i++)
                                 {
-                                    await Task.Run(() => mCh.Build_Otboynik(plastina, dm.Num));
+                                    await Task.Run(() => mCh.Build_Otboynik(dm.OtboynayaPlastini[i], dm.Num, i));
                                     CompliteDxf();
                                 }
                             }
+
                             if (string.IsNullOrEmpty(dm.Problems))
                                 MessageToRow(SearchRowByNum(dm.Num), goodColor, "");
                             else
@@ -922,7 +902,7 @@ public partial class InWork : Form
                     }
                     
                     SelectRow(SearchRowByNum(odl.Num));
-                    for (int i = 0; i <= 8; i++)
+                    for (int i = 0; i < Enum.GetNames(typeof(Command_ODL)).Length; i++)
                     {
                         lDone.Text = compltDXFcount.ToString();
                         if (cancel)
@@ -930,48 +910,47 @@ public partial class InWork : Form
                             CompliteSub(true);
                             return;
                         }
-                        
-                        if (i == 1)
+                        switch (i)
                         {
-                            if (odl.IsPassivka)
-                            {
-                                await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Полотно_пассивки));
+                            default:
+                                await Task.Run(() => mCh.Build_ODL(odl, (Command_ODL)i));
                                 CompliteDxf();
-                            }
-                        }
-                        else if (i == 2)
-                        {
-                            if (!odl.IsPassivka)
-                            {
-                                await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Замковая_стойка));
-                                CompliteDxf();
-                            }
-                        }
-                        else if (i == 7)
-                        {
-                            if (odl.IsPassivka)
-                            {
-                                await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Замковой_профиль_пассивки));
-                                CompliteDxf();
-                            }
-                        }
-                        else if(i == 8)
-                        {
-                            if(odl.Nalichnik(Raspolozhenie.Ниж) > 0)
-                            {
-                                await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Нижняя_стойка));
-                                CompliteDxf();
-                            }
-                            else if((odl.Otkrivanie == Otkrivanie.ЛевоеВО || odl.Otkrivanie == Otkrivanie.ПравоеВО) && odl.Porog > 0)
-                            {
-                                await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Порог));
-                                CompliteDxf();
-                            }
-                        }
-                        else
-                        {
-                            await Task.Run(() => mCh.Build_ODL(odl, (Command_ODL)i));
-                            CompliteDxf();
+                                break;
+                            case 1:
+                                if (odl.IsPassivka)
+                                {
+                                    await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Полотно_пассивки));
+                                    CompliteDxf();
+                                }
+                                break;
+                            case 2:
+                                if (!odl.IsPassivka)
+                                {
+                                    await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Замковая_стойка));
+                                    CompliteDxf();
+                                }
+                                break;
+                            case 7:
+                                if (odl.IsPassivka)
+                                {
+                                    await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Замковой_профиль_пассивки));
+                                    CompliteDxf();
+                                }
+                                break;
+                            case 8:
+                                if (odl.Nalichnik(Raspolozhenie.Ниж) > 0)
+                                {
+                                    await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Нижняя_стойка));
+                                    CompliteDxf();
+                                }
+                                break;
+                            case 9:
+                                if (odl.Porog > 0)
+                                {
+                                    await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Порог));
+                                    CompliteDxf();
+                                }
+                                break;
                         }
                     }
 
@@ -1072,6 +1051,15 @@ public partial class InWork : Form
                     break;
                 case "КВ10":
                     kvds.Add(new KV10(data, cons));
+                    break;
+                case "КВ11":
+                    kvds.Add(new KV11(data, cons));
+                    break;
+                case "КВ12а":
+                    kvds.Add(new KV12a(data, cons));
+                    break;
+                case "КВ12б":
+                    kvds.Add(new KV12b(data, cons));
                     break;
             }
         }

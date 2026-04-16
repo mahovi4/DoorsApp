@@ -42,7 +42,7 @@ namespace DoorsMaketChangers
             throw new NotImplementedException();
         }
 
-        public override void Build_Otboynik(OtboynayaPlastina plastina, string num)
+        public override void Build_Otboynik(OtboynayaPlastina plastina, string num, int count)
         {
             throw new NotImplementedException();
         }

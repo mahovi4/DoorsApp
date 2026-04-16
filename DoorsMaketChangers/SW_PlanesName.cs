@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace DoorsMaketChangers
 {
-    internal abstract class TemplateSection
+    internal enum SW_PlanesName
     {
-        internal abstract string SectionName { get; }
+        Спереди,
+        Справа,
+        Сверху
     }
 }
