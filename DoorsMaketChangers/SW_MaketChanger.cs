@@ -8,15 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using COM_DoorsLibrary;
 using SolidWorks.Interop.sldworks;
-using SldWorks;
+using SolidWorks.Interop.swconst;
 
 namespace DoorsMaketChangers
 {
     public class SW_MaketChanger : MaketChanger
     {
         private readonly string MaketName;
-        private SldWorks.SldWorks swApp = new SldWorks.SldWorks();
-        private SldWorks.ModelDoc2 Maket;
+        private SldWorks swApp = new SldWorks();
+        private ModelDoc2 Maket;
         private int longstatus, longwarnings;
 
         public SW_MaketChanger(string maketRootFolder, string maketName, string dxfFolder)
@@ -132,7 +132,8 @@ namespace DoorsMaketChangers
         private void SaveDXF(string name)
         {
             var b = Maket.ForceRebuild3(false);
-            var maketDoc = (SldWorks.PartDoc)Maket;
+            b = Maket.Extension.Rebuild((int)swRebuildOptions_e.swForceRebuildAll);
+            var maketDoc = (PartDoc)Maket;
             _ = maketDoc.ExportFlatPatternView(DxfPath + "\\" + name + ".DXF", 1);
         }
         private void SavePDF(string name)
@@ -151,6 +152,10 @@ namespace DoorsMaketChangers
                 ВысветитьЭлемент("DM_Верхний отгиб лицевого (активной створки)");
                 ВысветитьЭлемент("DM_Внутренний лист (активной створки)");
                 ВысветитьЭлемент("DM_Просечки на активке");
+                
+                if(dm.IsPerfVoda)
+                    ВысветитьЭлемент("Перфорация активки");
+
                 //ВысветитьЭлемент("Петли АС");
                 //if(dm.PetliAS_Count > 2)
                 //    ВысветитьЭлемент("3-я петля АС");
@@ -293,7 +298,10 @@ namespace DoorsMaketChangers
                     ВысветитьЭлемент("DM_Верхний отгиб лицевого пассивной");
                     ВысветитьЭлемент("DM_Вырез по притвору на лицевом пассивной");
                     ВысветитьЭлемент("DM_Просечки на пассивке");
-                    ВысветитьЭлемент("DM_Просечки на пассивке");
+
+                    if(dm.IsPerfVoda)
+                        ВысветитьЭлемент("Перфорация пассивки");
+
                     //ВысветитьЭлемент("Петли ПС");
                     //if (dm.PetliPS_Count > 2)
                     //    ВысветитьЭлемент("3-я петля ПС");
@@ -2620,9 +2628,9 @@ namespace DoorsMaketChangers
         }
         private void РедактироватьПодписиДоборов(ref DVM dvm)
         {
-            SldWorks.Configuration config;
-            SldWorks.CustomPropertyManager cusPropMgr;
-            config = (SldWorks.Configuration)Maket.GetActiveConfiguration();
+            Configuration config;
+            CustomPropertyManager cusPropMgr;
+            config = (Configuration)Maket.GetActiveConfiguration();
             cusPropMgr = config.CustomPropertyManager;
             РедактироватьЭскиз("DVM_Подпись_доборов");
             _ = cusPropMgr.Set2("ВысотаВДАЛ", dvm.LicList_VertDobor_Height(Stvorka.Активная).ToString());
@@ -2685,7 +2693,12 @@ namespace DoorsMaketChangers
                 case Command_ODL.Порог:
                     if (otkrivanie == Otkrivanie.Левое | otkrivanie == Otkrivanie.Правое) return 9;
                     return 14;
-
+                case Command_ODL.Вертикальное_ребро:
+                    return 15;
+                case Command_ODL.Горизонтальное_ребро_активки:
+                    return 16;
+                case Command_ODL.Горизонтальное_ребро_пассивки:
+                    return 17;
             }
         }
         private void ВысветитьODL(ref ODL odl, Command_ODL com)
@@ -2863,6 +2876,11 @@ namespace DoorsMaketChangers
                         : "Маркер порога ВО правый");
                     if (odl.IsTorcevoyShpingalet(1))
                         ВысветитьЭлемент("ODL_Ответка Делга в пороге ВО");
+                    break;
+                case 15:
+                case 16:
+                case 17:
+                    ВысветитьЭлемент("ODL_РЖП");
                     break;
             }
         }
@@ -3046,6 +3064,21 @@ namespace DoorsMaketChangers
                         ЗакрытьЭскиз();
                     }
                     break;
+                case 15:
+                    РедактироватьЭскиз("РЖП_эскиз");
+                    ИзменитьРазмер("РЖП_эскиз", "Длина", (float)odl.VertRZPLength);
+                    ЗакрытьЭскиз();
+                    break;
+                case 16:
+                    РедактироватьЭскиз("РЖП_эскиз");
+                    ИзменитьРазмер("РЖП_эскиз", "Длина", (float)odl.GorRZPLength(Stvorka.Активная));
+                    ЗакрытьЭскиз();
+                    break;
+                case 17:
+                    РедактироватьЭскиз("РЖП_эскиз");
+                    ИзменитьРазмер("РЖП_эскиз", "Длина", (float)odl.GorRZPLength(Stvorka.Пассивная));
+                    ЗакрытьЭскиз();
+                    break;
             }
         }
 
@@ -3213,6 +3246,18 @@ namespace DoorsMaketChangers
 
                     if (kvd.Data.LicPanel && kvd.GetNalichnik(false) > 20)
                         ВысветитьЭлемент("Прорези_под_наличник");
+
+                    if (!kvd.Name.Equals("КВ10"))
+                    {
+                        if (kvd.IsLicPanel)
+                        {
+                            ВысветитьЭлемент("Маркеры петель с МДФ");
+                            ВысветитьЭлемент("Маркеры петель с МДФ 3");
+                        }
+                        else
+                            ВысветитьЭлемент("Маркеры петель без МДФ");
+                    }
+
                     break;
                 case Command_KVD.Притолока:
                     if (kvd.Data.LicPanel)

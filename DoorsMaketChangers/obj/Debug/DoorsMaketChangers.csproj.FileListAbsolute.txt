@@ -63,9 +63,6 @@ D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMa
 D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\Interop.Kompas6API5.dll
 D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\Interop.Kompas6Constants.dll
 D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\Interop.KompasAPI7.dll
-D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\Interop.SldWorks.dll
-D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\Interop.SwCommands.dll
-D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\Interop.SwConst.dll
 D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMaketChangers.csproj.ResolveComReference.cache
 D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMaketChangers.csproj.CoreCompileInputs.cache
 D:\Махортов\Макросы\DoorsApp\DoorsMaketChangers\obj\Debug\DoorsMaketChangers.dll

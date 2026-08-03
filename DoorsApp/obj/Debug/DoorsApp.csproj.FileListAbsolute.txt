@@ -43,7 +43,6 @@ D:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\DoorsMaketChanger
 D:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\COM_DoorsLibrary.pdb
 D:\Махортов\Макросы\DoorsApp\DoorsApp\bin\Debug\DoorsMaketChangers.pdb
 D:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.csproj.AssemblyReference.cache
-D:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.exe.config
 D:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\DoorsApp.csproj.ResolveComReference.cache
 D:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\EXSkan_Kalitka.resources
 D:\Махортов\Макросы\DoorsApp\DoorsApp\obj\Debug\EXSkan_Reshetka.resources

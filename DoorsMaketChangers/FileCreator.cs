@@ -17,7 +17,7 @@ namespace DoorsMaketChangers
         public const string SweepTemplateFileExt = ".SLDPRT";
         
 
-        private SldWorks.SldWorks swApp = new SldWorks.SldWorks();
+        private SldWorks swApp = new SldWorks();
         private int longstatus, longwarnings;
         
         private List<string> sd_featuresName;

@@ -98,26 +98,78 @@
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\DoorsApp\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PDMWorks.Interop.pdmworks">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\PDMWorks.Interop.pdmworks.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="SolidWorks.Interop.cosworks">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.cosworks.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.dsgnchk">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.dsgnchk.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.fworks">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.fworks.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.gtswutilities">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.gtswutilities.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.sldcostingapi">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.sldcostingapi.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.sldtoolboxconfigureaddin">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.sldtoolboxconfigureaddin.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="SolidWorks.Interop.sldworks">
-      <HintPath>..\..\SW\Interop\2016\SolidWorks.Interop.sldworks.dll</HintPath>
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.sldworks.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.sustainability">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.sustainability.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.sw3dprinter">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.sw3dprinter.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.swbrowser">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.swbrowser.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="SolidWorks.Interop.swcommands">
-      <HintPath>..\..\SW\Interop\2016\SolidWorks.Interop.swcommands.dll</HintPath>
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.swcommands.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="SolidWorks.Interop.swconst">
-      <HintPath>..\..\SW\Interop\2016\SolidWorks.Interop.swconst.dll</HintPath>
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.swconst.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.swdimxpert">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.swdimxpert.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="SolidWorks.Interop.swdocumentmgr">
-      <HintPath>..\..\SW\Interop\2016\SolidWorks.Interop.swdocumentmgr.dll</HintPath>
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.swdocumentmgr.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.swmotionstudy">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.swmotionstudy.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="SolidWorks.Interop.swpublished">
-      <HintPath>..\..\SW\Interop\2016\SolidWorks.Interop.swpublished.dll</HintPath>
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.swpublished.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="SolidWorks.Interop.SWRoutingLib">
+      <HintPath>K:\Автоматическая_обработка_заказов\Программа обработки\Библы\SolidWorks.Interop.SWRoutingLib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
@@ -238,39 +290,12 @@
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>
-    <COMReference Include="SldWorks">
-      <Guid>{83A33D31-27C5-11CE-BFD4-00400513BB57}</Guid>
-      <VersionMajor>24</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
     <COMReference Include="stdole">
       <Guid>{00020430-0000-0000-C000-000000000046}</Guid>
       <VersionMajor>2</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>primary</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="SwCommands">
-      <Guid>{0AC1DE9F-3FBC-4C25-868D-7D4E9139CCE0}</Guid>
-      <VersionMajor>24</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="SwConst">
-      <Guid>{4687F359-55D0-4CD3-B6CF-2EB42C11F989}</Guid>
-      <VersionMajor>24</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
       <Isolated>False</Isolated>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </COMReference>

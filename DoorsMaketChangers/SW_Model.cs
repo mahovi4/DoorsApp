@@ -22,7 +22,7 @@ namespace DoorsMaketChangers
 
         public Feature StartingPoint { get; }
 
-        public SW_Model(SldWorks.SldWorks app, string rootPath)
+        public SW_Model(SldWorks app, string rootPath)
         {
             int longstatus = 0, longwarnings = 0;
 

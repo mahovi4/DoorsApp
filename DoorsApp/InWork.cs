@@ -677,7 +677,7 @@ public partial class InWork : Form
             Program.ini.ReadKey("Global", "G_MAKET"),
             Program.ini.ReadKey("Directoryes", "DIR_DXF"));
         //mCh = new FileCreator(Program.ini.ReadKey("Directoryes", "DIR_MAKET"),
-        //    Program.ini.ReadKey("Directoryes", "DIR_DXF"));
+        //Program.ini.ReadKey("Directoryes", "DIR_DXF"));
         //else
         //    mCh = new Kompas_MaketChanger(Program.ini.ReadKey("Directoryes", "DIR_MAKET"),
         //        Program.ini.ReadKey("Directoryes", "DIR_DXF"));
@@ -950,6 +950,22 @@ public partial class InWork : Form
                                     await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Порог));
                                     CompliteDxf();
                                 }
+                                break;
+                            case 10:
+                                await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Вертикальное_ребро));
+                                CompliteDxf();
+                                break;
+                            case 11:
+                                await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Горизонтальное_ребро_активки));
+                                CompliteDxf();
+                                break;
+                            case 12:
+                                if (odl.IsPassivka)
+                                {
+                                    await Task.Run(() => mCh.Build_ODL(odl, Command_ODL.Горизонтальное_ребро_пассивки));
+                                    CompliteDxf();
+                                }
+
                                 break;
                         }
                     }
