@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="COM_DoorsLibrary.dll" size="388096">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="COM_DoorsLibrary.dll" size="388608">
       <assemblyIdentity name="COM_DoorsLibrary" version="1.0.0.0" publicKeyToken="5534018916C5FC28" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Kc+XgD3sol67ugUQPtuxNK5NxF/JAO3gXI3W7kQP8V4=</dsig:DigestValue>
+        <dsig:DigestValue>WhanH2zkIPEz4ql4wBCqdz6k5WMZa9l1gBiY4Iw9904=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -66,14 +66,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DoorsMaketChangers.dll" size="159232">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DoorsMaketChangers.dll" size="161280">
       <assemblyIdentity name="DoorsMaketChangers" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>KAaACV+KVcEycsY46IJrCMvIuZeFkebWCl10u9BhIrw=</dsig:DigestValue>
+        <dsig:DigestValue>YmKgEUpxjuR7kDL5mpN6cQgli3H9OXo3l1SXQ8CX/ow=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
