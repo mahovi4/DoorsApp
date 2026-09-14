@@ -359,7 +359,7 @@ namespace DoorsMaketChangers
                         ВысветитьЭлемент("DM_Торцевая пластина_низ (ПС)");
                         ВысветитьЭлемент("DM_Просечки торцевой пластины низ (ПС)");
 
-                        if (dm.IsTorcShpingalet(0))
+                        if (dm.IsTorcShpingalet(1))
                             ВысветитьЭлемент("DM_Нижний шпингалет в ТП ПС");
                         else
                             ВысветитьЭлемент("DM_Молярное отверстие на торцевой низ (ПС)");
@@ -804,6 +804,16 @@ namespace DoorsMaketChangers
                             ЗакрытьЭскиз();
                         }
                     }
+
+                    if (dm.IsTorcevayaPlastina(0))
+                    {
+                        РедактироватьЭскиз("DM_ТП_В_ПС");
+                        //ИзменитьРазмер("DM_ТП_В_ПС", "Ширина", (float)dm.TorcevayaPlastina(0).Width);
+                        ИзменитьРазмер("DM_ТП_В_ПС", "ОтступПетлевой", (float)dm.TorcevayaPlastina(0).OtstupPetlya);
+                        //ИзменитьРазмер("DM_ТП_В_ПС", "ОтступЗамковой", (float)dm.TorcevayaPlastina(0).OtstupZamok);
+                        ЗакрытьЭскиз();
+                    }
+
                     if (dm.IsTorcShpingalet((int)Raspolozhenie.Верх))
                     {
                         РедактироватьЭскиз("DM_ВерхнийШпингалет");

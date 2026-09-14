@@ -42,14 +42,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="COM_DoorsLibrary.dll" size="388608">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="COM_DoorsLibrary.dll" size="390144">
       <assemblyIdentity name="COM_DoorsLibrary" version="1.0.0.0" publicKeyToken="5534018916C5FC28" language="neutral" processorArchitecture="amd64" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>WhanH2zkIPEz4ql4wBCqdz6k5WMZa9l1gBiY4Iw9904=</dsig:DigestValue>
+        <dsig:DigestValue>dmSdPtVLK/GRKGrvm9I+6j+/M9zhSwbV8/1JBVJCAS8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -61,7 +61,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>MXBhJzYE8jeNrJn7m0BtAeFbk6XK8Edp7LAug5OAmZ4=</dsig:DigestValue>
+        <dsig:DigestValue>LV43totsqoL5biNLReXt3hTyPxrMRcwmUtMtWolXin4=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -73,7 +73,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>YmKgEUpxjuR7kDL5mpN6cQgli3H9OXo3l1SXQ8CX/ow=</dsig:DigestValue>
+        <dsig:DigestValue>t5N0iJSasuzTW/XFNmsJfaiota1EcAXYjkIhbkafTVE=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

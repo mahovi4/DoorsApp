@@ -1069,7 +1069,7 @@ public partial class InWork : Form
                     kvds.Add(new KV10(data, cons));
                     break;
                 case "КВ11":
-                    kvds.Add(new KV11(data, cons));
+                    kvds.Add(new KV11a(data, cons));
                     break;
                 case "КВ12а":
                     kvds.Add(new KV12a(data, cons));
