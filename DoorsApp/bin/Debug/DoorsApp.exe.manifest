@@ -66,14 +66,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DoorsMaketChangers.dll" size="161280">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="DoorsMaketChangers.dll" size="161792">
       <assemblyIdentity name="DoorsMaketChangers" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>t5N0iJSasuzTW/XFNmsJfaiota1EcAXYjkIhbkafTVE=</dsig:DigestValue>
+        <dsig:DigestValue>gtDnHqrojj3myE1Jgg9YwQvqPLKeDoqBvWfz+Yq2Tg8=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

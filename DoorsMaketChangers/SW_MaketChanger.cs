@@ -723,6 +723,12 @@ namespace DoorsMaketChangers
                     ИзменитьРазмер("DM_ТП_В_АС", "ОтступПетлевой", (float)dm.TorcevayaPlastina(0).OtstupPetlya);
                     ИзменитьРазмер("DM_ТП_В_АС", "ОтступЗамковой", (float)dm.TorcevayaPlastina(0).OtstupZamok);
                     ЗакрытьЭскиз();
+                    if (dm.IsPassivka && dm.IsTermoblock(0))
+                    {
+                        РедактироватьЭскиз("DM_ТБ_П");
+                        ИзменитьРазмер("DM_ТБ_П", "Отступ", (float)44.5);
+                        ЗакрытьЭскиз();
+                    }
                 }
 
                 if (dm.IsSekPloskost(Stvorka.Активная))
