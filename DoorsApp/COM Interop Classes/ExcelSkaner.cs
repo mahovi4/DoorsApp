@@ -622,6 +622,8 @@ public class ExcelSkaner
         if (dataColumns[(int)CollNames.Задвижки].IndexOf("Ночной сторож") >= 0 | 
             dataColumns[(int)CollNames.Комментарий].IndexOf("Ночной сторож") >= 0) 
             zad.Kod = (int)ZadvizhkaNames.Ночной_сторож;
+        else if (dataColumns[(int)CollNames.Задвижки].IndexOf("FL-0360-CR (хром) Apecs") >= 0)
+            zad.Kod = (int)ZadvizhkaNames.FL_0360;
         //else if (dataColumns[(int)CollNames.Задвижки].IndexOf("ЗД-01") >= 0 | 
         //         dataColumns[(int)CollNames.Комментарий].IndexOf("ЗД-01") >= 0) 
         //    zad.Kod = (int)ZadvizhkaNames.ЗД_01;
@@ -634,16 +636,16 @@ public class ExcelSkaner
         //        var count = strArr
         //            .Count(zash => zash.IndexOf("ЗТ-150") >= 0);
 
-        //        if(count == 1 && param.Porog != (short)PorogNames.Выподающий)
-        //            zad.Kod = (int)ZadvizhkaNames.ЗТ_150;
-        //        else if (count > 1 && param.Porog == (short) PorogNames.Выподающий)
-        //            zad.Kod = (int) ZadvizhkaNames.ЗТ_150;
-        //        else
-        //            zad.FromTable = $"Ни хрена не понял!!!\n{strCol}";
-        //    }
-        //}
-        //else if (dataColls[(int)CollNames.Задвижки].IndexOf("Торцевой шпингалет") >= 0) 
-        //    zad.Kod = (int)ZadvizhkaNames.Торцевой_шпингалет;
+            //        if(count == 1 && param.Porog != (short)PorogNames.Выподающий)
+            //            zad.Kod = (int)ZadvizhkaNames.ЗТ_150;
+            //        else if (count > 1 && param.Porog == (short) PorogNames.Выподающий)
+            //            zad.Kod = (int) ZadvizhkaNames.ЗТ_150;
+            //        else
+            //            zad.FromTable = $"Ни хрена не понял!!!\n{strCol}";
+            //    }
+            //}
+            //else if (dataColls[(int)CollNames.Задвижки].IndexOf("Торцевой шпингалет") >= 0) 
+            //    zad.Kod = (int)ZadvizhkaNames.Торцевой_шпингалет;
         else {
             zad.Kod = (int)ZadvizhkaNames.Нет;
             zad.FromTable = dataColumns[(int)CollNames.Задвижки] + '\n' + dataColumns[(int)CollNames.Комментарий];
