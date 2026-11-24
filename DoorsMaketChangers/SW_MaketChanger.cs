@@ -357,7 +357,12 @@ namespace DoorsMaketChangers
                         if (dm.IsTorcShpingalet(0))
                             ВысветитьЭлемент("DM_Верхний шпингалет в ТП ПС");
                         else
+                        {
                             ВысветитьЭлемент("DM_Молярное отверстие на торцевой верх (ПС)");
+                            if(dm.Ruchka((short)Stvorka.Пассивная, 0).Kod == (int)RuchkaNames.АП_DoorLock)
+                                ВысветитьЭлемент("DM_ДЛ ВПС_Тело верх");
+                        }
+
                     }
 
                     if (dm.IsTorcevayaPlastina(1))
@@ -368,7 +373,11 @@ namespace DoorsMaketChangers
                         if (dm.IsTorcShpingalet(1))
                             ВысветитьЭлемент("DM_Нижний шпингалет в ТП ПС");
                         else
+                        {
                             ВысветитьЭлемент("DM_Молярное отверстие на торцевой низ (ПС)");
+                            if (dm.Ruchka((short)Stvorka.Пассивная, 0).Kod == (int)RuchkaNames.АП_DoorLock)
+                                ВысветитьЭлемент("DM_ДЛ ВПС_Тело низ");
+                        }
                     }
                     if (dm.IsOkno(2))
                     {
