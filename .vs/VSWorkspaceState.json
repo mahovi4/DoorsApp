@@ -1,7 +1,9 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\DoorsApp",
+    "\\DoorsMaketChangers"
   ],
-  "SelectedNode": "\\DoorsApp.sln",
+  "SelectedNode": "\\DoorsMaketChangers\\SW_MaketChanger.cs",
   "PreviewInSolutionExplorer": false
 }
